@@ -25,11 +25,11 @@ const Home = () => {
   
   useEffect(() => {
     // 폭발음과 타자 소리 초기화
-    explosionSoundRef.current = new Audio('/explosion.wav');
+    explosionSoundRef.current = new Audio('/angrysindy/explosion.wav');
     explosionSoundRef.current.load();
     explosionSoundRef.current.volume = 0.7; // 폭발음 볼륨 조절
     
-    typingSoundRef.current = new Audio('/typewriter-2.mp3');
+    typingSoundRef.current = new Audio('/angrysindy/typewriter-2.mp3');
     typingSoundRef.current.load();
     typingSoundRef.current.volume = 0.5; // 타자 소리 볼륨
     
