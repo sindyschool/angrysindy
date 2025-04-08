@@ -23,27 +23,45 @@ const Home = () => {
   const explosionSoundRef = useRef<HTMLAudioElement | null>(null);
   const typingSoundRef = useRef<HTMLAudioElement | null>(null);
   
-  useEffect(() => {
-    // 폭발음과 타자 소리 초기화
-    explosionSoundRef.current = new Audio('/angrysindy/explosion.wav');
-    explosionSoundRef.current.load();
-    explosionSoundRef.current.volume = 0.7; // 폭발음 볼륨 조절
+  // 오디오 초기화 함수
+  const initializeAudio = () => {
+    if (!explosionSoundRef.current) {
+      explosionSoundRef.current = new Audio('/angrysindy/explosion.wav');
+      explosionSoundRef.current.volume = 0.7;
+    }
+    if (!typingSoundRef.current) {
+      typingSoundRef.current = new Audio('/angrysindy/typewriter-2.mp3');
+      typingSoundRef.current.volume = 0.5;
+    }
+  };
+
+  // 클릭 이벤트로 오디오 초기화
+  const handleEnterRoom = () => {
+    initializeAudio(); // 사용자 상호작용으로 오디오 초기화
+    setIsEntering(true);
+    setTimeout(() => {
+      setStep('input');
+      setIsEntering(false);
+      sessionStartTime.current = Date.now();
+    }, 1000);
+  };
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setText(value);
+    setAnger(Math.min(100, value.length));
     
-    typingSoundRef.current = new Audio('/angrysindy/typewriter-2.mp3');
-    typingSoundRef.current.load();
-    typingSoundRef.current.volume = 0.5; // 타자 소리 볼륨
-    
-    return () => {
-      if (explosionSoundRef.current) {
-        explosionSoundRef.current.pause();
-        explosionSoundRef.current = null;
-      }
-      if (typingSoundRef.current) {
-        typingSoundRef.current.pause();
-        typingSoundRef.current = null;
-      }
-    };
-  }, []);
+    // 타자 소리 재생 (50ms 간격으로 제한)
+    const now = Date.now();
+    if (now - lastTypingTime.current > 50 && typingSoundRef.current) {
+      typingSoundRef.current.currentTime = 0;
+      typingSoundRef.current.play().catch(() => {
+        // 오류 발생 시 다시 초기화
+        initializeAudio();
+      });
+      lastTypingTime.current = now;
+    }
+  };
 
   // 폭발 효과 관련 useEffect
   useEffect(() => {
@@ -63,8 +81,9 @@ const Home = () => {
 
       // 폭발음 재생
       if (explosionSoundRef.current) {
-        explosionSoundRef.current.play().catch(error => {
-          console.warn('Explosion sound playback failed:', error);
+        explosionSoundRef.current.play().catch(() => {
+          // 오류 발생 시 다시 초기화
+          initializeAudio();
         });
       }
 
@@ -79,22 +98,6 @@ const Home = () => {
       setIsWaveAnimating(false);
     }
   }, [anger]);
-
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    setText(value);
-    setAnger(Math.min(100, value.length));
-    
-    // 타자 소리 재생 (50ms 간격으로 제한)
-    const now = Date.now();
-    if (now - lastTypingTime.current > 50 && typingSoundRef.current) {
-      typingSoundRef.current.currentTime = 0;
-      typingSoundRef.current.play().catch(error => {
-        console.warn('Typing sound playback failed:', error);
-      });
-      lastTypingTime.current = now;
-    }
-  };
 
   const handleAfterResponse = (choice: 'more' | 'done') => {
     // 감정 데이터 저장
@@ -119,14 +122,19 @@ const Home = () => {
     }
   };
 
-  const handleEnterRoom = () => {
-    setIsEntering(true);
-    setTimeout(() => {
-      setStep('input');
-      setIsEntering(false);
-      sessionStartTime.current = Date.now();
-    }, 1000);
-  };
+  // 컴포넌트 정리
+  useEffect(() => {
+    return () => {
+      if (explosionSoundRef.current) {
+        explosionSoundRef.current.pause();
+        explosionSoundRef.current = null;
+      }
+      if (typingSoundRef.current) {
+        typingSoundRef.current.pause();
+        typingSoundRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div
