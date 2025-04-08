@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(-12deg) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(-12deg) translateY(-20px);
+  }
+}
+
+@keyframes smallBubbleFloat {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes symbolFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px) rotate(10deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes lipsPulse {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.92);
+  }
+}
+
+@keyframes baseWave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.1); }
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-10px) scaleY(1.1); }
+}
+
+@keyframes waveOffset {
+  0%, 100% { transform: translateY(5px) scaleY(1); }
+  50% { transform: translateY(-5px) scaleY(1.05); }
+}
+
+@keyframes bubble {
+  0% { transform: translateY(0) scale(1); opacity: 0.6; }
+  100% { transform: translateY(-100px) scale(0); opacity: 0; }
+}
+
+@keyframes particle {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { 
+    transform: translate(
+      calc(-50% + var(--tx)), 
+      calc(-50% + var(--ty))
+    ) scale(0); 
+    opacity: 0;
+  }
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes intensiveShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(15px, -15px) scale(1.1);
+  }
+  50% {
+    transform: translate(-10px, -25px) scale(0.9);
+  }
+  75% {
+    transform: translate(-15px, -10px) scale(1.05);
+  }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes blobAnimation {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70%/60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40%/50% 60% 30% 60%;
+  }
+  50% {
+    border-radius: 40% 60% 30% 70%/60% 40% 60% 30%;
+  }
+  75% {
+    border-radius: 60% 40% 70% 30%/40% 70% 30% 60%;
+  }
+}
+
+@keyframes pulseAnimation {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes rotateAnimation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { 
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% { 
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+}
+
+@keyframes splatter {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(-50%) scaleY(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh) scaleY(1);
+    opacity: 0;
+  }
+}
+
+@keyframes bloodSpread {
+  0% {
+    clip-path: circle(0% at var(--x) var(--y));
+    opacity: 0.8;
+  }
+  100% {
+    clip-path: circle(150% at var(--x) var(--y));
+    opacity: 0;
+  }
+}
+
+@keyframes mouthChewing {
+  0%, 100% {
+    transform: scaleY(1) translateY(0);
+  }
+  25% {
+    transform: scaleY(0.8) translateY(2px);
+  }
+  50% {
+    transform: scaleY(0.85) translateY(-1px);
+  }
+  75% {
+    transform: scaleY(0.75) translateY(1px);
+  }
+}
+
+@keyframes teethMovement {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--tooth-rotation));
+  }
+  25% {
+    transform: translateY(2px) rotate(var(--tooth-rotation));
+  }
+  50% {
+    transform: translateY(-1px) rotate(var(--tooth-rotation));
+  }
+  75% {
+    transform: translateY(1px) rotate(var(--tooth-rotation));
+  }
+}
+
+@keyframes mouthInnerMove {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(3px) scaleY(0.9);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-2px) scaleY(0.95);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translateY(2px) scaleY(0.85);
+    opacity: 0.9;
+  }
+} 
