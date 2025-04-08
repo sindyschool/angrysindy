@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.css": "/angrysindy/static/css/main.924942e3.css",
-    "main.js": "/angrysindy/static/js/main.8cb436bd.js",
+    "main.css": "/angrysindy/static/css/main.3b66a95d.css",
+    "main.js": "/angrysindy/static/js/main.baa6bc70.js",
     "index.html": "/angrysindy/index.html"
   },
   "entrypoints": [
-    "static/css/main.924942e3.css",
-    "static/js/main.8cb436bd.js"
+    "static/css/main.3b66a95d.css",
+    "static/js/main.baa6bc70.js"
   ]
 }
