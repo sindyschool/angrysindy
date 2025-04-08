@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/angrysindy/static/css/main.e9b92b3c.css",
+    "main.js": "/angrysindy/static/js/main.02b4c7c3.js",
+    "index.html": "/angrysindy/index.html",
+    "main.e9b92b3c.css.map": "/angrysindy/static/css/main.e9b92b3c.css.map",
+    "main.02b4c7c3.js.map": "/angrysindy/static/js/main.02b4c7c3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e9b92b3c.css",
+    "static/js/main.02b4c7c3.js"
+  ]
+}
