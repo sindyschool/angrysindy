@@ -1,11 +1,11 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './Home';
 import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <div>
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 bg-gray-900/50 backdrop-blur-sm z-50">
@@ -30,7 +30,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 };
 
