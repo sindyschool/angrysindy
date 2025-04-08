@@ -20,24 +20,67 @@ const Home = () => {
   const sessionStartTime = useRef(Date.now());
   
   // 오디오 ref 추가
-  const explosionSoundRef = useRef<HTMLAudioElement | null>(null);
-  const typingSoundRef = useRef<HTMLAudioElement | null>(null);
+  const explosionSoundRef = useRef<{ context: AudioContext; buffer: AudioBuffer; play: () => void } | null>(null);
+  const typingSoundRef = useRef<{ context: AudioContext; buffer: AudioBuffer; play: () => void } | null>(null);
   
   // 오디오 초기화 함수
-  const initializeAudio = () => {
-    if (!explosionSoundRef.current) {
-      explosionSoundRef.current = new Audio('/angrysindy/explosion.wav');
-      explosionSoundRef.current.volume = 0.7;
-    }
-    if (!typingSoundRef.current) {
-      typingSoundRef.current = new Audio('/angrysindy/typewriter-2.mp3');
-      typingSoundRef.current.volume = 0.5;
+  const initializeAudio = async () => {
+    try {
+      // 오디오 컨텍스트 생성
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const audioContext = new AudioContext();
+      
+      // 폭발음 로드
+      const explosionResponse = await fetch('/angrysindy/explosion.wav');
+      const explosionArrayBuffer = await explosionResponse.arrayBuffer();
+      const explosionBuffer = await audioContext.decodeAudioData(explosionArrayBuffer);
+      
+      // 타자 소리 로드
+      const typewriterResponse = await fetch('/angrysindy/typewriter-2.mp3');
+      const typewriterArrayBuffer = await typewriterResponse.arrayBuffer();
+      const typewriterBuffer = await audioContext.decodeAudioData(typewriterArrayBuffer);
+      
+      // 오디오 소스 생성
+      explosionSoundRef.current = {
+        context: audioContext,
+        buffer: explosionBuffer,
+        play: () => {
+          const source = audioContext.createBufferSource();
+          source.buffer = explosionBuffer;
+          const gainNode = audioContext.createGain();
+          gainNode.gain.value = 0.7;
+          source.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          source.start(0);
+        }
+      };
+      
+      typingSoundRef.current = {
+        context: audioContext,
+        buffer: typewriterBuffer,
+        play: () => {
+          const source = audioContext.createBufferSource();
+          source.buffer = typewriterBuffer;
+          const gainNode = audioContext.createGain();
+          gainNode.gain.value = 0.5;
+          source.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          source.start(0);
+        }
+      };
+      
+      // 오디오 컨텍스트 시작
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+    } catch (error) {
+      console.warn('Audio initialization failed:', error);
     }
   };
 
   // 클릭 이벤트로 오디오 초기화
-  const handleEnterRoom = () => {
-    initializeAudio(); // 사용자 상호작용으로 오디오 초기화
+  const handleEnterRoom = async () => {
+    await initializeAudio(); // 사용자 상호작용으로 오디오 초기화
     setIsEntering(true);
     setTimeout(() => {
       setStep('input');
@@ -53,12 +96,8 @@ const Home = () => {
     
     // 타자 소리 재생 (50ms 간격으로 제한)
     const now = Date.now();
-    if (now - lastTypingTime.current > 50 && typingSoundRef.current) {
-      typingSoundRef.current.currentTime = 0;
-      typingSoundRef.current.play().catch(() => {
-        // 오류 발생 시 다시 초기화
-        initializeAudio();
-      });
+    if (now - lastTypingTime.current > 50 && typingSoundRef.current?.play) {
+      typingSoundRef.current.play();
       lastTypingTime.current = now;
     }
   };
@@ -80,11 +119,8 @@ const Home = () => {
       }
 
       // 폭발음 재생
-      if (explosionSoundRef.current) {
-        explosionSoundRef.current.play().catch(() => {
-          // 오류 발생 시 다시 초기화
-          initializeAudio();
-        });
+      if (explosionSoundRef.current?.play) {
+        explosionSoundRef.current.play();
       }
 
       setTimeout(() => {
@@ -125,13 +161,11 @@ const Home = () => {
   // 컴포넌트 정리
   useEffect(() => {
     return () => {
-      if (explosionSoundRef.current) {
-        explosionSoundRef.current.pause();
-        explosionSoundRef.current = null;
+      if (explosionSoundRef.current?.context) {
+        explosionSoundRef.current.context.close();
       }
-      if (typingSoundRef.current) {
-        typingSoundRef.current.pause();
-        typingSoundRef.current = null;
+      if (typingSoundRef.current?.context) {
+        typingSoundRef.current.context.close();
       }
     };
   }, []);
