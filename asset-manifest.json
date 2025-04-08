@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/angrysindy/static/css/main.e9b92b3c.css",
-    "main.js": "/angrysindy/static/js/main.888642ab.js",
+    "main.js": "/angrysindy/static/js/main.201aba4c.js",
     "index.html": "/angrysindy/index.html",
     "main.e9b92b3c.css.map": "/angrysindy/static/css/main.e9b92b3c.css.map",
-    "main.888642ab.js.map": "/angrysindy/static/js/main.888642ab.js.map"
+    "main.201aba4c.js.map": "/angrysindy/static/js/main.201aba4c.js.map"
   },
   "entrypoints": [
     "static/css/main.e9b92b3c.css",
-    "static/js/main.888642ab.js"
+    "static/js/main.201aba4c.js"
   ]
 }
